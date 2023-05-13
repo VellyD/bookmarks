@@ -23,3 +23,37 @@ window.addEventListener("click", (e) =>
     ? modalElement.classList.remove("show-modal")
     : false
 );
+
+// Form validation
+function validate(nameValue, urlValue) {
+  const expression =
+    /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/g;
+  const regex = new RegExp(expression);
+
+  if (!nameValue || !urlValue) {
+    alert("Please provide values for both fields!");
+    return false;
+  }
+
+  if (!urlValue.match(regex)) {
+    alert("Please provide a valid URL address.");
+    return false;
+  }
+
+  return true;
+}
+
+// Handle form
+function storeBookmark(e) {
+  e.preventDefault();
+  const nameValue = websiteName.value;
+  let urlValue = websiteUrl.value;
+  if (!urlValue.includes("http://") && !urlValue.includes("https://")) {
+    urlValue = `https://${urlValue}`;
+  }
+
+  if (!validate(nameValue, urlValue)) {
+    return false;
+  }
+}
+bookMarkForm.addEventListener("submit", storeBookmark);
